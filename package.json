@@ -6,6 +6,7 @@
   "main": "dist/react-lineto.js",
   "scripts": {
     "build": "webpack --config webpack.config.js -p",
+    "demo": "webpack-dev-server --config webpack.demo.config.js --hot --inline",
     "lint": "eslint --ext js,jsx ./src"
   },
   "homepage": "https://github.com/kdeloach/react-lineto",
