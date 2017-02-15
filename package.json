@@ -1,0 +1,20 @@
+{
+  "name": "react-lineto",
+  "version": "1.0.0",
+  "author": "Kevin DeLoach <kdeloach@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+  },
+  "homepage": "https://github.com/kdeloach/react-lineto",
+  "repository": {
+      "type": "git",
+      "url": "https://github.com/kdeloach/react-lineto.git"
+  },
+  "bugs": {
+      "url": "https://github.com/kdeloach/react-lineto/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
