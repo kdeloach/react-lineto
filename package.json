@@ -12,11 +12,11 @@
   },
   "homepage": "https://github.com/kdeloach/react-lineto",
   "repository": {
-      "type": "git",
-      "url": "https://github.com/kdeloach/react-lineto.git"
+    "type": "git",
+    "url": "https://github.com/kdeloach/react-lineto.git"
   },
   "bugs": {
-      "url": "https://github.com/kdeloach/react-lineto/issues"
+    "url": "https://github.com/kdeloach/react-lineto/issues"
   },
   "dependencies": {
     "react": "^15.4.2",
