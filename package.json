@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "dist/react-lineto.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js -p",
+    "build": "webpack --config webpack.config.js",
     "demo": "webpack-dev-server --config webpack.demo.config.js --hot --inline",
     "lint": "eslint --ext js,jsx ./src",
     "test": "npm run lint"

@@ -3,7 +3,9 @@
 var webpack = require('webpack');
 var path = require('path');
 
-module.exports = {
+var outputPath = path.join(__dirname, 'dist');
+
+var config = {
     entry: './src/index.jsx',
 
     module: {
@@ -13,17 +15,33 @@ module.exports = {
                 loader: 'babel-loader',
                 exclude: /node_modules/,
                 query: {
-                    presets: ['es2015', 'react'],
+                    presets: ['es2015', 'react']
                 }
             }
         ]
-    },
-
-    output: {
-        path: path.join(__dirname, 'dist'),
-        filename: 'react-lineto.js',
-        library: 'react-lineto',
-        libraryTarget: 'umd',
-        umdNamedDefine: true,
-    },
+    }
 };
+
+module.exports = [
+    Object.assign({}, config, {
+        output: {
+            path: outputPath,
+            filename: 'react-lineto.js',
+            library: 'react-lineto',
+            libraryTarget: 'umd',
+            umdNamedDefine: true,
+        }
+    }),
+    Object.assign({}, config, {
+        output: {
+            path: outputPath,
+            filename: 'react-lineto.min.js',
+            library: 'react-lineto',
+            libraryTarget: 'umd',
+            umdNamedDefine: true,
+        },
+        plugins: [
+            new webpack.optimize.UglifyJsPlugin()
+        ]
+    })
+];
