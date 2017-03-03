@@ -4170,6 +4170,11 @@ module.exports = traverseAllChildren;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Line = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -4185,6 +4190,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var defaultAnchor = { x: 0.5, y: 0.5 };
+
+var optionalStyleProps = {
+    className: _react.PropTypes.string,
+    border: _react.PropTypes.string,
+    zIndex: _react.PropTypes.number
+};
+
 var LineTo = function (_Component) {
     _inherits(LineTo, _Component);
 
@@ -4197,9 +4210,15 @@ var LineTo = function (_Component) {
     _createClass(LineTo, [{
         key: 'componentWillMount',
         value: function componentWillMount() {
-            var defaultAnchor = '50% 50%';
-            this.fromAnchor = this.parseAnchor(this.props.fromAnchor || defaultAnchor);
-            this.toAnchor = this.parseAnchor(this.props.toAnchor || defaultAnchor);
+            this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
+            this.toAnchor = this.parseAnchor(this.props.toAnchor);
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            if (typeof this.props.delay !== 'undefined') {
+                this.deferUpdate(this.props.delay);
+            }
         }
     }, {
         key: 'componentWillReceiveProps',
@@ -4209,6 +4228,9 @@ var LineTo = function (_Component) {
             }
             if (nextProps.toAnchor !== this.props.toAnchor) {
                 this.toAnchor = this.parseAnchor(this.props.toAnchor);
+            }
+            if (typeof nextProps.delay !== 'undefined') {
+                this.deferUpdate(nextProps.delay);
             }
         }
     }, {
@@ -4222,68 +4244,69 @@ var LineTo = function (_Component) {
             // changed, but that may be expensive and unnecessary.
             return true;
         }
+
+        // Forced update after delay (MS)
+
+    }, {
+        key: 'deferUpdate',
+        value: function deferUpdate(delay) {
+            var _this2 = this;
+
+            clearTimeout(this.t);
+            this.t = setTimeout(function () {
+                return _this2.forceUpdate();
+            }, delay);
+        }
     }, {
         key: 'parseAnchorPercent',
         value: function parseAnchorPercent(value) {
             var percent = parseFloat(value) / 100;
             if (isNaN(percent) || !isFinite(percent)) {
-                throw new Error('LinkTo could not parse percent value');
+                throw new Error('LinkTo could not parse percent value "' + value + '"');
             }
             return percent;
         }
     }, {
-        key: 'parseAnchorValue',
-        value: function parseAnchorValue(value) {
+        key: 'parseAnchorText',
+        value: function parseAnchorText(value) {
+            // Try to infer the relevant axis.
             switch (value) {
                 case 'top':
+                    return { y: 0 };
                 case 'left':
-                    return 0;
+                    return { x: 0 };
                 case 'middle':
+                    return { y: 0.5 };
                 case 'center':
-                    return 0.5;
+                    return { x: 0.5 };
                 case 'bottom':
+                    return { y: 1 };
                 case 'right':
-                    return 1;
+                    return { x: 1 };
             }
-            return this.parseAnchorPercent(value);
+            return null;
         }
     }, {
         key: 'parseAnchor',
         value: function parseAnchor(value) {
+            if (!value) {
+                return defaultAnchor;
+            }
             var parts = value.split(' ');
             if (parts.length !== 2) {
-                throw new Error('LinkTo anchor format is "<y> <x>"');
+                throw new Error('LinkTo anchor format is "<x> <y>"');
             }
-            return {
-                x: this.parseAnchorValue(parts[1]),
-                y: this.parseAnchorValue(parts[0])
-            };
+
+            var _parts = _slicedToArray(parts, 2),
+                x = _parts[0],
+                y = _parts[1];
+
+            return Object.assign({}, defaultAnchor, this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) }, this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) });
         }
     }, {
         key: 'findElement',
         value: function findElement(className) {
             return document.getElementsByClassName(className)[0];
-        }
-    }, {
-        key: 'getElementOffset',
-        value: function getElementOffset(el) {
-            var top = -window.pageYOffset;
-            var left = -window.pageXOffset;
-            var parentEl = el.offsetParent;
-
-            while (parentEl) {
-                if (parentEl === document.body) {
-                    break;
-                }
-
-                top += parentEl.offsetTop + parentEl.clientTop;
-
-                left += parentEl.offsetLeft + parentEl.clientLeft;
-
-                parentEl = parentEl.offsetParent;
-            }
-
-            return { top: top, left: left };
         }
     }, {
         key: 'detect',
@@ -4300,19 +4323,19 @@ var LineTo = function (_Component) {
                 return false;
             }
 
-            var box0 = a.getBoundingClientRect();
-            var box1 = b.getBoundingClientRect();
-
             var anchor0 = this.fromAnchor;
             var anchor1 = this.toAnchor;
 
-            var offset0 = this.getElementOffset(a);
-            var offset1 = this.getElementOffset(b);
+            var box0 = a.getBoundingClientRect();
+            var box1 = b.getBoundingClientRect();
 
-            var x0 = box0.left + box0.width * anchor0.x - offset0.left;
-            var x1 = box1.left + box1.width * anchor1.x - offset1.left;
-            var y0 = box0.top + box0.height * anchor0.y - offset0.top;
-            var y1 = box1.top + box1.height * anchor1.y - offset1.top;
+            var offsetX = window.pageXOffset;
+            var offsetY = window.pageYOffset;
+
+            var x0 = box0.left + box0.width * anchor0.x + offsetX;
+            var x1 = box1.left + box1.width * anchor1.x + offsetX;
+            var y0 = box0.top + box0.height * anchor0.y + offsetY;
+            var y1 = box1.top + box1.height * anchor1.y + offsetY;
 
             return { x0: x0, y0: y0, x1: x1, y1: y1 };
         }
@@ -4320,13 +4343,55 @@ var LineTo = function (_Component) {
         key: 'render',
         value: function render() {
             var points = this.detect();
-            if (!points) {
-                return null;
-            }
-            var x0 = points.x0,
-                y0 = points.y0,
-                x1 = points.x1,
-                y1 = points.y1;
+            return points ? _react2.default.createElement(Line, _extends({}, points, this.props)) : null;
+        }
+    }]);
+
+    return LineTo;
+}(_react.Component);
+
+exports.default = LineTo;
+
+
+LineTo.propTypes = Object.assign({}, {
+    from: _react.PropTypes.string.isRequired,
+    to: _react.PropTypes.string.isRequired,
+    fromAnchor: _react.PropTypes.string,
+    toAnchor: _react.PropTypes.string,
+    delay: _react.PropTypes.number
+}, optionalStyleProps);
+
+var Line = exports.Line = function (_PureComponent) {
+    _inherits(Line, _PureComponent);
+
+    function Line() {
+        _classCallCheck(this, Line);
+
+        return _possibleConstructorReturn(this, (Line.__proto__ || Object.getPrototypeOf(Line)).apply(this, arguments));
+    }
+
+    _createClass(Line, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // Append rendered DOM element to body so we don't have
+            // to factor in element offsets.
+            document.body.appendChild(this.el);
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            document.body.removeChild(this.el);
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            var _props2 = this.props,
+                x0 = _props2.x0,
+                y0 = _props2.y0,
+                x1 = _props2.x1,
+                y1 = _props2.y1;
 
 
             var dy = y1 - y0;
@@ -4353,25 +4418,30 @@ var LineTo = function (_Component) {
                 style: style
             };
 
-            return _react2.default.createElement('div', props);
+            // We need a wrapper element to prevent an exception when then
+            // React component is removed. This is because we manually
+            // move the rendered DOM element after creation.
+            return _react2.default.createElement(
+                'div',
+                { className: 'react-lineto-placeholder' },
+                _react2.default.createElement('div', _extends({
+                    ref: function ref(el) {
+                        _this4.el = el;
+                    }
+                }, props))
+            );
         }
     }]);
 
-    return LineTo;
-}(_react.Component);
+    return Line;
+}(_react.PureComponent);
 
-exports.default = LineTo;
-
-
-LineTo.propTypes = {
-    from: _react.PropTypes.string.isRequired,
-    fromAnchor: _react.PropTypes.string,
-    to: _react.PropTypes.string.isRequired,
-    toAnchor: _react.PropTypes.string,
-    className: _react.PropTypes.string,
-    border: _react.PropTypes.string,
-    zIndex: _react.PropTypes.number
-};
+Line.propTypes = Object.assign({}, {
+    x0: _react.PropTypes.number.isRequired,
+    y0: _react.PropTypes.number.isRequired,
+    x1: _react.PropTypes.number.isRequired,
+    y1: _react.PropTypes.number.isRequired
+}, optionalStyleProps);
 
 /***/ })
 /******/ ]);
