@@ -70,28 +70,6 @@ export default class LineTo extends Component {
         return document.getElementsByClassName(className)[0];
     }
 
-    getElementOffset(el) {
-        let top = -window.pageYOffset;
-        let left = -window.pageXOffset;
-        let parentEl = el.offsetParent;
-
-        while (parentEl) {
-            if (parentEl === document.body) {
-                break;
-            }
-
-            top += parentEl.offsetTop +
-                   parentEl.clientTop;
-
-            left += parentEl.offsetLeft +
-                    parentEl.clientLeft;
-
-            parentEl = parentEl.offsetParent;
-        }
-
-        return  { top, left };
-    }
-
     detect() {
         const { from, to } = this.props;
 
@@ -102,19 +80,19 @@ export default class LineTo extends Component {
             return false;
         }
 
-        const box0 = a.getBoundingClientRect();
-        const box1 = b.getBoundingClientRect();
-
         const anchor0 = this.fromAnchor;
         const anchor1 = this.toAnchor;
 
-        const offset0 = this.getElementOffset(a);
-        const offset1 = this.getElementOffset(b);
+        const box0 = a.getBoundingClientRect();
+        const box1 = b.getBoundingClientRect();
 
-        const x0 = box0.left + box0.width * anchor0.x - offset0.left;
-        const x1 = box1.left + box1.width * anchor1.x - offset1.left;
-        const y0 = box0.top + box0.height * anchor0.y - offset0.top;
-        const y1 = box1.top + box1.height * anchor1.y - offset1.top;
+        const offsetX = window.pageXOffset;
+        const offsetY = window.pageYOffset;
+
+        const x0 = box0.left + box0.width * anchor0.x + offsetX;
+        const x1 = box1.left + box1.width * anchor1.x + offsetX;
+        const y0 = box0.top + box0.height * anchor0.y + offsetY;
+        const y1 = box1.top + box1.height * anchor1.y + offsetY;
 
         return { x0, y0, x1, y1 };
     }
@@ -135,6 +113,16 @@ LineTo.propTypes = Object.assign({}, {
 }, optionalStyleProps);
 
 export class Line extends PureComponent {
+    componentDidMount() {
+        // Append rendered DOM element to body so we don't have
+        // to factor in element offsets.
+        document.body.appendChild(this.el);
+    }
+
+    componentWillUnmount() {
+        document.body.removeChild(this.el);
+    }
+
     render() {
         const { x0, y0, x1, y1 } = this.props;
 
@@ -162,8 +150,16 @@ export class Line extends PureComponent {
             style: style,
         }
 
+        // We need a wrapper element to prevent an exception when then
+        // React component is removed. This is because we manually
+        // move the rendered DOM element after creation.
         return (
-            <div {...props}></div>
+            <div className="react-lineto-placeholder">
+                <div
+                    ref={(el) => { this.el = el; }}
+                    {...props}
+                ></div>
+            </div>
         );
     }
 }
