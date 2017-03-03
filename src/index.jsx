@@ -1,5 +1,7 @@
 import React, { PropTypes, Component, PureComponent } from 'react';
 
+const defaultAnchor = { x: 0.5, y: 0.5 };
+
 const optionalStyleProps = {
     className: PropTypes.string,
     border: PropTypes.string,
@@ -8,9 +10,8 @@ const optionalStyleProps = {
 
 export default class LineTo extends Component {
     componentWillMount() {
-        const defaultAnchor = '50% 50%';
-        this.fromAnchor = this.parseAnchor(this.props.fromAnchor || defaultAnchor);
-        this.toAnchor = this.parseAnchor(this.props.toAnchor || defaultAnchor);
+        this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
+        this.toAnchor = this.parseAnchor(this.props.toAnchor);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -35,35 +36,37 @@ export default class LineTo extends Component {
     parseAnchorPercent(value) {
         const percent = parseFloat(value) / 100;
         if (isNaN(percent) || !isFinite(percent)) {
-            throw new Error('LinkTo could not parse percent value');
+            throw new Error(`LinkTo could not parse percent value "${value}"`);
         }
         return percent;
     }
 
-    parseAnchorValue(value) {
+    parseAnchorText(value) {
+        // Try to infer the relevant axis.
         switch (value) {
-            case 'top':
-            case 'left':
-                return 0;
-            case 'middle':
-            case 'center':
-                return 0.5;
-            case 'bottom':
-            case 'right':
-                return 1;
+            case 'top': return { y: 0 };
+            case 'left': return { x: 0 };
+            case 'middle': return { y: 0.5 };
+            case 'center': return { x: 0.5 };
+            case 'bottom': return { y: 1 };
+            case 'right': return { x: 1 };
         }
-        return this.parseAnchorPercent(value);
+        return null;
     }
 
     parseAnchor(value) {
+        if (!value) {
+            return defaultAnchor;
+        }
         const parts = value.split(' ');
         if (parts.length !== 2) {
-            throw new Error('LinkTo anchor format is "<y> <x>"');
+            throw new Error('LinkTo anchor format is "<x> <y>"');
         }
-        return {
-            x: this.parseAnchorValue(parts[1]),
-            y: this.parseAnchorValue(parts[0]),
-        };
+        const [x, y] = parts;
+        return Object.assign({}, defaultAnchor,
+            this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) },
+            this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) }
+        );
     }
 
     findElement(className) {
