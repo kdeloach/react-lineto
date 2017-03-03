@@ -1,4 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes, Component, PureComponent } from 'react';
+
+const optionalStyleProps = {
+    className: PropTypes.string,
+    border: PropTypes.string,
+    zIndex: PropTypes.number,
+};
 
 export default class LineTo extends Component {
     componentWillMount() {
@@ -115,10 +121,22 @@ export default class LineTo extends Component {
 
     render() {
         const points = this.detect();
-        if (!points) {
-            return null;
-        }
-        const { x0, y0, x1, y1 } = points;
+        return points ? (
+            <Line {...points} {...this.props} />
+        ) : null;
+    }
+}
+
+LineTo.propTypes = Object.assign({}, {
+    from: PropTypes.string.isRequired,
+    to: PropTypes.string.isRequired,
+    fromAnchor: PropTypes.string,
+    toAnchor: PropTypes.string,
+}, optionalStyleProps);
+
+export class Line extends PureComponent {
+    render() {
+        const { x0, y0, x1, y1 } = this.props;
 
         const dy = y1 - y0;
         const dx = x1 - x0;
@@ -150,12 +168,9 @@ export default class LineTo extends Component {
     }
 }
 
-LineTo.propTypes = {
-    from: PropTypes.string.isRequired,
-    fromAnchor: PropTypes.string,
-    to: PropTypes.string.isRequired,
-    toAnchor: PropTypes.string,
-    className: PropTypes.string,
-    border: PropTypes.string,
-    zIndex: PropTypes.number,
-};
+Line.propTypes = Object.assign({}, {
+    x0: PropTypes.number.isRequired,
+    y0: PropTypes.number.isRequired,
+    x1: PropTypes.number.isRequired,
+    y1: PropTypes.number.isRequired,
+}, optionalStyleProps);
