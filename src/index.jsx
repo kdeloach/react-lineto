@@ -59,12 +59,18 @@ export default class LineTo extends Component {
     parseAnchorText(value) {
         // Try to infer the relevant axis.
         switch (value) {
-            case 'top': return { y: 0 };
-            case 'left': return { x: 0 };
-            case 'middle': return { y: 0.5 };
-            case 'center': return { x: 0.5 };
-            case 'bottom': return { y: 1 };
-            case 'right': return { x: 1 };
+            case 'top':
+                return { y: 0 };
+            case 'left':
+                return { x: 0 };
+            case 'middle':
+                return { y: 0.5 };
+            case 'center':
+                return { x: 0.5 };
+            case 'bottom':
+                return { y: 1 };
+            case 'right':
+                return { x: 1 };
         }
         return null;
     }
