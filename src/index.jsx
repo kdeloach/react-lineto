@@ -14,12 +14,21 @@ export default class LineTo extends Component {
         this.toAnchor = this.parseAnchor(this.props.toAnchor);
     }
 
+    componentDidMount() {
+        if (typeof this.props.delay !== 'undefined') {
+            this.deferUpdate(this.props.delay);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.fromAnchor !== this.props.fromAnchor) {
             this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
         }
         if (nextProps.toAnchor !== this.props.toAnchor) {
             this.toAnchor = this.parseAnchor(this.props.toAnchor);
+        }
+        if (typeof nextProps.delay !== 'undefined') {
+            this.deferUpdate(nextProps.delay);
         }
     }
 
@@ -31,6 +40,12 @@ export default class LineTo extends Component {
         // We could return true only if the positions of `from` and `to` have
         // changed, but that may be expensive and unnecessary.
         return true;
+    }
+
+    // Forced update after delay (MS)
+    deferUpdate(delay) {
+        clearTimeout(this.t);
+        this.t = setTimeout(() => this.forceUpdate(), delay);
     }
 
     parseAnchorPercent(value) {
@@ -113,6 +128,7 @@ LineTo.propTypes = Object.assign({}, {
     to: PropTypes.string.isRequired,
     fromAnchor: PropTypes.string,
     toAnchor: PropTypes.string,
+    delay: PropTypes.number,
 }, optionalStyleProps);
 
 export class Line extends PureComponent {

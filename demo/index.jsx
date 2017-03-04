@@ -213,12 +213,6 @@ class DelayTest extends Component {
         };
     }
 
-    componentDidUpdate(nextProps, nextState) {
-        if (nextState.targetVisible !== this.state.targetVisible) {
-            this.forceUpdate();
-        }
-    }
-
     render() {
         const target = this.state.targetVisible ? (
             <Block
@@ -245,7 +239,8 @@ class DelayTest extends Component {
                     to="item-J"
                     fromAnchor="75% 75%"
                     toAnchor="25% 25%"
-                    border="2px dotted #0f0" />
+                    border="2px dotted #0f0"
+                    delay={1} />
             </fieldset>
        );
     }

@@ -37,6 +37,7 @@ function render() {
 | to\*       | string | CSS class name of the second element           |
 | fromAnchor | string | Anchor for starting point (Format: "<x> <y>")  | `top right`, `bottom center`, `100% 0`
 | toAnchor   | string | Anchor for ending point (Format: "<x> <y>")    | `top right`, `bottom center`, `100% 0`
+| delay      | number | Force render after delay (ms)                  |
 | className  | string | Desired CSS className for the rendered element |
 | border     | string | Line decoration (CSS border property syntax)   | `1px solid #000`
 | zIndex     | number | Z-index offset                                 |
