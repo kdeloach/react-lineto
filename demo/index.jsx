@@ -2,11 +2,12 @@ import 'babel-polyfill';
 import React, { PropTypes, Component } from 'react';
 import { render } from 'react-dom';
 
-import LineTo from '../src/index.jsx';
+import LineTo, { Line } from '../src/index.jsx';
 
 function Demo() {
     return (
         <div style={{ paddingBottom: '200px' }}>
+            <LineTest />
             <RotationTest />
             <HoverTest />
             <DelayTest />
@@ -40,6 +41,24 @@ Block.propTypes = {
     color: PropTypes.string,
     className: PropTypes.string,
 };
+
+// Draw a star to demonstrate base Line component.
+class LineTest extends Component {
+    render() {
+        return (
+            <div>
+                <Line x0={20} y0={10}
+                      x1={20} y1={40} />
+                <Line x0={5} y0={25}
+                      x1={35} y1={25} />
+                <Line x0={10} y0={15}
+                      x1={30} y1={35} />
+                <Line x0={30} y0={15}
+                      x1={10} y1={35} />
+            </div>
+        );
+    }
+}
 
 // Demonstrate how to draw a line between moving components.
 class RotationTest extends Component {
