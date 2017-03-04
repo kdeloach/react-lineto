@@ -1,3 +1,7 @@
+## 1.1.1
+
+* Fix broken NPM deployment
+
 ## 1.1.0
 
 * Remove element offset calculation
