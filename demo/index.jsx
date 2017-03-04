@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React, { PropTypes, Component } from 'react';
 import { render } from 'react-dom';
 
