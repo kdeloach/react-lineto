@@ -1,3 +1,8 @@
+## 1.2.0
+
+* Fix demos in IE
+* Exclude React library from output bundle
+
 ## 1.1.1
 
 * Fix broken NPM deployment
