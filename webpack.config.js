@@ -24,7 +24,11 @@ var config = {
                 loader: 'eslint-loader',
             },
         ]
-    }
+    },
+
+    externals: [
+        'react'
+    ]
 };
 
 module.exports = [
