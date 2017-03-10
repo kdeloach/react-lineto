@@ -19,7 +19,7 @@ Browse to [localhost:4567](http://localhost:4567).
 
 Draw line between two DOM elements.
 
-### Example
+#### Example
 
 ```
 import LineTo from 'react-lineto';
@@ -54,7 +54,7 @@ function render() {
 
 Draw line using pixel coordinates (relative to viewport).
 
-### Example
+#### Example
 
 ```
 import { Line } from 'react-lineto';
