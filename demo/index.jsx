@@ -72,23 +72,35 @@ class RotationTest extends Component {
     }
 
     componentDidMount() {
-        this.timeout = setInterval(() => {
-            if (!this.state.paused) {
-                this.setState(Object.assign({}, this.state, {
-                    ticks: this.state.ticks + 1,
-                }));
-            }
-        }, 20);
+        this.startAnimation();
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timeout);
+        this.stopAnimation();
+    }
+
+    startAnimation() {
+        const step = () => {
+            this.setState(Object.assign({}, this.state, {
+                ticks: this.state.ticks + 1,
+            }));
+            this.frame = requestAnimationFrame(step);
+        };
+        step();
+    }
+
+    stopAnimation() {
+        cancelAnimationFrame(this.frame);
     }
 
     togglePause() {
-        this.setState(Object.assign({}, this.state, {
-            paused: !this.state.paused,
-        }));
+        const paused = !this.state.paused;
+        if (paused) {
+            this.stopAnimation();
+        } else {
+            this.startAnimation();
+        }
+        this.setState(Object.assign({}, this.state, { paused }));
     }
 
     renderPauseButton() {
