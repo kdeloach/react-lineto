@@ -43,11 +43,35 @@ function render() {
 | to\*       | string | CSS class name of the second element           |
 | fromAnchor | string | Anchor for starting point (Format: "x y")      | `top right`, `bottom center`, `100% 0`
 | toAnchor   | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `100% 0`
+| bottomSpace| number | For stepped lines, defines the bottom space    |  20
+| stepped    | boolean| Specify if line is stepped line                |  false
 | delay      | number | Force render after delay (ms)                  |
 | className  | string | Desired CSS className for the rendered element |
 | border     | string | Line decoration (CSS border property syntax)   | `1px solid #000`
 | zIndex     | number | Z-index offset                                 |
 
+Normal Line:
+```
+                *
+                  \
+                   \
+                    \
+                     \
+                      \
+                       *
+```
+
+Stepped Line:
+```
+                *  
+                |  
+                |  
+                |  
+                -----     /\
+                    |     |   Bottom space
+                    |     |
+                    *     \/
+```
 \* Required
 
 ### Line

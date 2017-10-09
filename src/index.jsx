@@ -95,7 +95,7 @@ export default class LineTo extends Component {
     }
 
     detect() {
-        const { from, to } = this.props;
+        const { from, to, bottomSpace } = this.props;
 
         const a = this.findElement(from);
         const b = this.findElement(to);
@@ -118,15 +118,59 @@ export default class LineTo extends Component {
         const y0 = box0.top + box0.height * anchor0.y + offsetY;
         const y1 = box1.top + box1.height * anchor1.y + offsetY;
 
-        return { x0, y0, x1, y1 };
+        const y2 = y1 - bottomSpace;
+
+        /* For diagonal lines you need just two points => (x0, y0) and (x1, y1)
+         But for drawing stepped type lines you need 3 lines and 4 points:
+
+           Line 1: (x0, y0) -> (x0, y2)
+           Line 2: (x1, y2) -> (x0, y2)
+           Line 3: (x1, y1) -> (x1, y2)
+                             * (x0, y0)
+                             |
+                             |
+                             |
+             (x1, y2).------. (x0, y2)       /\
+                     |                       |
+                     |                       |   bottomSpace
+                     |                       |
+                     * (x1, y1)              \?
+         */
+
+        return { x0, y0, x1, y1, y2 };
     }
 
     render() {
         const points = this.detect();
-        return points ? (
-            <Line {...points} {...this.props} />
-        ) : null;
-    }
+        if (this.props.stepped) {
+            return points ? (
+            <div>
+              <Line
+                x0={points.x0}
+                y0={points.y0}
+                x1={points.x0}
+                y1={points.y2}
+                {...this.props}
+              />
+              <Line
+                x0={points.x0}
+                y0={points.y2}
+                x1={points.x1}
+                y1={points.y2}
+                {...this.props}
+              />
+              <Line
+                x0={points.x1}
+                y0={points.y1}
+                x1={points.x1}
+                y1={points.y2}
+                {...this.props}
+              />
+            </div>
+          ) : null;
+        }
+        return points ? <Line {...points} {...this.props} /> : null;
+      }
 }
 
 LineTo.propTypes = Object.assign({}, {
@@ -135,7 +179,14 @@ LineTo.propTypes = Object.assign({}, {
     fromAnchor: PropTypes.string,
     toAnchor: PropTypes.string,
     delay: PropTypes.number,
+    bottomSpace: PropTypes.number,
+    stepped: PropTypes.bool
 }, optionalStyleProps);
+
+LineTo.defaultProps = {
+    bottomSpace: 20,
+    stepped: false
+  };
 
 export class Line extends PureComponent {
     componentDidMount() {
