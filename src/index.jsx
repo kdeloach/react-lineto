@@ -165,8 +165,8 @@ export class Line extends PureComponent {
             width: `${length}px`,
             zIndex: this.props.zIndex || '1',
             transform: `rotate(${angle}deg)`,
-            transformOrigin: '0 0',
             // Rotate around (x0, y0)
+            transformOrigin: '0 0',
         };
 
         const defaultStyle = {
