@@ -6,6 +6,7 @@ const optionalStyleProps = {
     className: PropTypes.string,
     border: PropTypes.string,
     zIndex: PropTypes.number,
+    style: PropTypes.object,
 };
 
 export default class LineTo extends Component {
@@ -157,22 +158,25 @@ export class Line extends PureComponent {
         const angle = Math.atan2(dy, dx) * 180 / Math.PI;
         const length = Math.sqrt(dx * dx + dy * dy);
 
-        const style = {
+        const positionStyle = {
             position: 'absolute',
             top: `${y0}px`,
             left: `${x0}px`,
             width: `${length}px`,
-            height: '1px',
-            borderTop: this.props.border || '1px solid #f00',
             zIndex: this.props.zIndex || '1',
             transform: `rotate(${angle}deg)`,
             // Rotate around (x0, y0)
             transformOrigin: '0 0',
         };
 
+        const defaultStyle = {
+            height: '1px',
+            borderTop: this.props.border || '1px solid #f00',
+        };
+
         const props = {
             className: this.props.className,
-            style: style,
+            style: Object.assign({}, defaultStyle, this.props.style, positionStyle),
         }
 
         // We need a wrapper element to prevent an exception when then
