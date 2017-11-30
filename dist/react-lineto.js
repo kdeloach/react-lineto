@@ -11,41 +11,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -65,13 +65,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
@@ -117,7 +117,8 @@ var defaultAnchor = { x: 0.5, y: 0.5 };
 var optionalStyleProps = {
     className: _react.PropTypes.string,
     border: _react.PropTypes.string,
-    zIndex: _react.PropTypes.number
+    zIndex: _react.PropTypes.number,
+    style: _react.PropTypes.object
 };
 
 var LineTo = function (_Component) {
@@ -322,28 +323,30 @@ var Line = exports.Line = function (_PureComponent) {
             var angle = Math.atan2(dy, dx) * 180 / Math.PI;
             var length = Math.sqrt(dx * dx + dy * dy);
 
-            var style = {
+            var positionStyle = {
                 position: 'absolute',
                 top: y0 + 'px',
                 left: x0 + 'px',
                 width: length + 'px',
-                height: '1px',
-                borderTop: this.props.border || '1px solid #f00',
                 zIndex: this.props.zIndex || '1',
                 transform: 'rotate(' + angle + 'deg)',
                 // Rotate around (x0, y0)
                 transformOrigin: '0 0'
             };
 
-            var props = {
-                className: this.props.className,
-                style: style
+            var defaultStyle = {
+                height: '1px',
+                borderTop: this.props.border || '1px solid #f00'
             };
 
-            // We need a wrapper element to prevent an exception when then
-            // React component is removed. This is because we manually
-            // move the rendered DOM element after creation.
-            return _react2.default.createElement(
+            var props = {
+                className: this.props.className,
+                style: Object.assign({}, defaultStyle, this.props.style, positionStyle)
+
+                // We need a wrapper element to prevent an exception when then
+                // React component is removed. This is because we manually
+                // move the rendered DOM element after creation.
+            };return _react2.default.createElement(
                 'div',
                 { className: 'react-lineto-placeholder' },
                 _react2.default.createElement('div', _extends({
