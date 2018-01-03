@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Compatible with React 16
+
 ## 1.2.0
 
 * Fix demos in IE

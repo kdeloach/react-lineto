@@ -1,6 +1,6 @@
 {
   "name": "react-lineto",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "author": "Kevin DeLoach <kdeloach@gmail.com>",
   "license": "MIT",
   "main": "dist/react-lineto.js",
@@ -19,8 +19,8 @@
     "url": "https://github.com/kdeloach/react-lineto/issues"
   },
   "dependencies": {
-    "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react": "16.2.0",
+    "react-dom": "16.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
@@ -32,6 +32,7 @@
     "eslint": "^3.15.0",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-react": "^6.9.0",
+    "prop-types": "15.6.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
   }
