@@ -1,4 +1,5 @@
-import React, { PropTypes, Component, PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import React, { Component, PureComponent } from 'react';
 
 const defaultAnchor = { x: 0.5, y: 0.5 };
 
@@ -187,7 +188,7 @@ export class Line extends PureComponent {
                 <div
                     ref={(el) => { this.el = el; }}
                     {...props}
-                ></div>
+                 />
             </div>
         );
     }
