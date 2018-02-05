@@ -97,7 +97,7 @@ export default class LineTo extends Component {
     }
 
     detect() {
-        const { from, to } = this.props;
+        const { from, to, within = '' } = this.props;
 
         const a = this.findElement(from);
         const b = this.findElement(to);
@@ -112,8 +112,16 @@ export default class LineTo extends Component {
         const box0 = a.getBoundingClientRect();
         const box1 = b.getBoundingClientRect();
 
-        const offsetX = window.pageXOffset;
-        const offsetY = window.pageYOffset;
+        let offsetX = window.pageXOffset;
+        let offsetY = window.pageYOffset;
+
+        if (within) {
+            const p = this.findElement(within);
+            const boxp = p.getBoundingClientRect();
+
+            offsetX -= boxp.left;
+            offsetY -= boxp.top;
+        }
 
         const x0 = box0.left + box0.width * anchor0.x + offsetX;
         const x1 = box1.left + box1.width * anchor1.x + offsetX;
@@ -134,6 +142,7 @@ export default class LineTo extends Component {
 LineTo.propTypes = Object.assign({}, {
     from: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
+    within: PropTypes.string,
     fromAnchor: PropTypes.string,
     toAnchor: PropTypes.string,
     delay: PropTypes.number,
@@ -141,17 +150,23 @@ LineTo.propTypes = Object.assign({}, {
 
 export class Line extends PureComponent {
     componentDidMount() {
-        // Append rendered DOM element to body so we don't have
-        // to factor in element offsets.
-        document.body.appendChild(this.el);
+        // Append rendered DOM element to the container the
+        // offsets were calculated for
+        this.within.appendChild(this.el);
     }
 
     componentWillUnmount() {
-        document.body.removeChild(this.el);
+        this.within.removeChild(this.el);
+    }
+
+    findElement(className) {
+      return document.getElementsByClassName(className)[0];
     }
 
     render() {
-        const { x0, y0, x1, y1 } = this.props;
+        const { x0, y0, x1, y1, within = '' } = this.props;
+
+        this.within = within ? this.findElement(within) : document.body;
 
         const dy = y1 - y0;
         const dx = x1 - x0;
