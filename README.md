@@ -41,8 +41,8 @@ function render() {
 | ---------- | ------ | ---------------------------------------------- | --------------
 | from\*     | string | CSS class name of the first element            |
 | to\*       | string | CSS class name of the second element           |
-| fromAnchor | string | Anchor for starting point (Format: "x y")      | `top right`, `bottom center`, `100% 0`
-| toAnchor   | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `100% 0`
+| fromAnchor | string | Anchor for starting point (Format: "x y")      | `top right`, `bottom center`, `left`, `100% 0`
+| toAnchor   | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `left`, `100% 0`
 | delay      | number or bool | Force render after delay (ms)          | `0`, `1`, `100`, `true`
 | className  | string | Desired CSS className for the rendered element |
 | border     | string | Line decoration (CSS border property syntax)   | `1px solid #000`

@@ -98,13 +98,13 @@ export default class LineTo extends Component {
             return defaultAnchor;
         }
         const parts = value.split(' ');
-        if (parts.length !== 2) {
+        if (parts.length > 2) {
             throw new Error('LinkTo anchor format is "<x> <y>"');
         }
         const [x, y] = parts;
         return Object.assign({}, defaultAnchor,
-            this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) },
-            this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) }
+            x ? this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) } : {},
+            y ? this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) } : {}
         );
     }
 
