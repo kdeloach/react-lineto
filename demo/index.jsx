@@ -3,13 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { render } from 'react-dom';
 
-import LineTo, { Line } from '../src/index.jsx';
+import LineTo, { SteppedLineTo, Line } from '../src/index.jsx';
 
 function Demo() {
     return (
-        <div style={{ paddingBottom: '200px' }}>
-            <LineTest />
-            <RotationTest />
+        <div>
+            <PolygonTest />
+            <SteppedTest />
             <HoverTest />
             <DelayTest />
         </div>
@@ -43,112 +43,110 @@ Block.propTypes = {
     className: PropTypes.string,
 };
 
-// Draw a star to demonstrate base Line component.
-class LineTest extends Component {
-    render() {
-        return (
-            <div>
-                <Line x0={20} y0={10}
-                      x1={20} y1={40} />
-                <Line x0={5} y0={25}
-                      x1={35} y1={25} />
-                <Line x0={10} y0={15}
-                      x1={30} y1={35} />
-                <Line x0={30} y0={15}
-                      x1={10} y1={35} />
-            </div>
-        );
-    }
-}
+class PolygonTest extends Component {
+    makeShape(x, y, n, initialAngle) {
+        const elems = [];
+        const lineLength = 100;
+        const angle = Math.PI - Math.PI / n;
 
-// Demonstrate how to draw a line between moving components.
-class RotationTest extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            ticks: 0,
-            paused: false,
-        };
-        this.togglePause = this.togglePause.bind(this);
-    }
+        let x0 = x;
+        let y0 = y;
 
-    componentDidMount() {
-        this.startAnimation();
-    }
-
-    componentWillUnmount() {
-        this.stopAnimation();
-    }
-
-    startAnimation() {
-        const step = () => {
-            this.setState(Object.assign({}, this.state, {
-                ticks: this.state.ticks + 1,
-            }));
-            this.frame = requestAnimationFrame(step);
-        };
-        step();
-    }
-
-    stopAnimation() {
-        cancelAnimationFrame(this.frame);
-    }
-
-    togglePause() {
-        const paused = !this.state.paused;
-        if (paused) {
-            this.stopAnimation();
-        } else {
-            this.startAnimation();
+        for (let i = 0, theta = initialAngle; i < n; i += 1, theta += angle) {
+            const x1 = x0 + lineLength * Math.cos(theta);
+            const y1 = y0 + lineLength * Math.sin(theta);
+            elems.push(<Line key={i} x0={x0} y0={y0} x1={x1} y1={y1} />);
+            x0 = x1;
+            y0 = y1;
         }
-        this.setState(Object.assign({}, this.state, { paused }));
-    }
 
-    renderPauseButton() {
-        const text = this.state.paused ? 'Play' : 'Pause';
-        return (
-            <button onClick={this.togglePause}>{text}</button>
-        );
+        return elems;
     }
 
     render() {
-        const ox = 300;
-        const oy = 120;
-        const r = 100;
-
-        const t = this.state.ticks * Math.PI / 180;
-
-        const x = Math.cos(t) * r + ox;
-        const y = Math.sin(t) * r + oy;
+        const triangle = this.makeShape(80, 75, 3, Math.PI / 3);
+        const star = this.makeShape(150, 105, 5, 0);
+        const ngon = this.makeShape(280, 85, 7, Math.PI / 7);
 
         return (
-            <fieldset id="rotation-test">
-                <legend>Rotation Test</legend>
-                {this.renderPauseButton()}
-                <Block
-                    className="item-G"
-                    top={`${y}px`}
-                    left={`${x}px`}
-                    color="#0f0"
-                    >G</Block>
-                <Block
-                    className="item-H"
-                    top={`${oy}px`}
-                    left={`${ox}px`}
-                    color="#f00"
-                    >H</Block>
-                <LineTo
-                    from="item-G"
-                    to="item-H"
-                    border="2px solid blue"
-                    className="line-XYZ" />
+            <fieldset id="polygon-test">
+                <legend>Polygon Test</legend>
+
+                Demonstrate how to draw absolutely positioned line segments.
+
+                {triangle}
+                {star}
+                {ngon}
             </fieldset>
         );
     }
 }
 
-// Demonstrate how to draw a line from one component to another
-// in response to a hover event.
+class SteppedTest extends Component {
+    render() {
+        const style = {
+            delay: true,
+            borderColor: '#ddd',
+            borderStyle: 'solid',
+            borderWidth: 3,
+        };
+        return (
+            <fieldset id="stepped-test">
+                <legend>Stepped Test</legend>
+
+                Demonstrate how to draw stepped lines.
+
+                <Block
+                    className="stepped-A"
+                    top="50px"
+                    left="90px"
+                    color="#00f"
+                    >A</Block>
+                <Block
+                    className="stepped-B"
+                    top="150px"
+                    left="20px"
+                    color="#00f"
+                    >B</Block>
+                <Block
+                    className="stepped-C"
+                    top="150px"
+                    left="90px"
+                    color="#00f"
+                    >C</Block>
+                <Block
+                    className="stepped-D"
+                    top="150px"
+                    left="160px"
+                    color="#00f"
+                    >D</Block>
+                <Block
+                    className="stepped-E"
+                    top="50px"
+                    left="300px"
+                    color="#00f"
+                    >E</Block>
+                <Block
+                    className="stepped-F"
+                    top="120px"
+                    left="300px"
+                    color="#00f"
+                    >F</Block>
+                <SteppedLineTo from="stepped-A" to="stepped-B"
+                    fromAnchor="bottom" toAnchor="top" {...style} />
+                <SteppedLineTo from="stepped-A" to="stepped-C"
+                    fromAnchor="bottom" toAnchor="top" {...style} />
+                <SteppedLineTo from="stepped-A" to="stepped-D"
+                    fromAnchor="bottom" toAnchor="top" {...style} />
+                <SteppedLineTo from="stepped-A" to="stepped-E"
+                    fromAnchor="right" toAnchor="left" orientation="h" {...style} />
+                <SteppedLineTo from="stepped-A" to="stepped-F"
+                    fromAnchor="right" toAnchor="left" orientation="h" {...style} />
+            </fieldset>
+        );
+    }
+}
+
 class HoverTest extends Component {
     constructor(props) {
         super(props);
@@ -176,58 +174,62 @@ class HoverTest extends Component {
                 to={to}
                 fromAnchor="middle right"
                 toAnchor="middle left"
-                border="3px solid #f00"
+                borderWidth={3}
             />
         ) : null;
         return (
             <fieldset id="hover-test">
                 <legend>Hover Test</legend>
+
+                Demonstrate how to draw a line from one component to another
+                in response to a hover event.
+
                 <Block
-                    className="item-A"
-                    top="20px"
-                    left="10px"
+                    className="hover-A"
+                    top="80px"
+                    left="20px"
                     color="#00f"
-                    onMouseOver={() => this.drawLine('item-A', 'item-F')}
+                    onMouseOver={() => this.drawLine('hover-A', 'hover-F')}
                     onMouseOut={this.clearLine}
                     >A</Block>
                 <Block
-                    className="item-B"
-                    top="80px"
-                    left="10px"
+                    className="hover-B"
+                    top="140px"
+                    left="20px"
                     color="#0f0"
-                    onMouseOver={() => this.drawLine('item-B', 'item-E')}
+                    onMouseOver={() => this.drawLine('hover-B', 'hover-E')}
                     onMouseOut={this.clearLine}
                     >B</Block>
                 <Block
-                    className="item-C"
-                    top="140px"
-                    left="10px"
+                    className="hover-C"
+                    top="200px"
+                    left="20px"
                     color="#00f"
-                    onMouseOver={() => this.drawLine('item-C', 'item-D')}
+                    onMouseOver={() => this.drawLine('hover-C', 'hover-D')}
                     onMouseOut={this.clearLine}
                     >C</Block>
                 <Block
-                    className="item-D"
-                    top="20px"
+                    className="hover-D"
+                    top="80px"
                     left="300px"
                     color="#0f0"
-                    onMouseOver={() => this.drawLine('item-D', 'item-C')}
+                    onMouseOver={() => this.drawLine('hover-D', 'hover-C')}
                     onMouseOut={this.clearLine}
                     >D</Block>
                 <Block
-                    className="item-E"
-                    top="80px"
+                    className="hover-E"
+                    top="140px"
                     left="300px"
                     color="#00f"
-                    onMouseOver={() => this.drawLine('item-E', 'item-B')}
+                    onMouseOver={() => this.drawLine('hover-E', 'hover-B')}
                     onMouseOut={this.clearLine}
                     >E</Block>
                 <Block
-                    className="item-F"
-                    top="140px"
+                    className="hover-F"
+                    top="200px"
                     left="300px"
                     color="#0f0"
-                    onMouseOver={() => this.drawLine('item-F', 'item-A')}
+                    onMouseOver={() => this.drawLine('hover-F', 'hover-A')}
                     onMouseOut={this.clearLine}
                     >F</Block>
                 {line}
@@ -236,8 +238,6 @@ class HoverTest extends Component {
     }
 }
 
-// Demonstrate how to draw a line to a component which may not yet
-// exist at the moment that the LineTo component has been mounted.
 class DelayTest extends Component {
     constructor(props) {
         super(props);
@@ -249,8 +249,8 @@ class DelayTest extends Component {
     render() {
         const target = this.state.targetVisible ? (
             <Block
-                className="item-J"
-                top="30px"
+                className="delay-F"
+                top="80px"
                 left="300px"
                 color="#f00"
                 >F</Block>
@@ -258,9 +258,13 @@ class DelayTest extends Component {
         return (
             <fieldset id="delay-test">
                 <legend>Delay Test</legend>
+
+                Demonstrate how to draw a line to a component which does not
+                exist at the moment that the LineTo component has been mounted.
+
                 <Block
-                    className="item-I"
-                    top="30px"
+                    className="delay-E"
+                    top="80px"
                     left="20px"
                     color="#00f"
                     onMouseOver={() => this.setState({ targetVisible: true })}
@@ -268,11 +272,13 @@ class DelayTest extends Component {
                     >E</Block>
                 {target}
                 <LineTo
-                    from="item-I"
-                    to="item-J"
+                    from="delay-E"
+                    to="delay-F"
                     fromAnchor="75% 75%"
                     toAnchor="25% 25%"
-                    border="2px dotted #0f0"
+                    borderColor="#0f0"
+                    borderStyle="dotted"
+                    borderWidth={2}
                     delay={1} />
             </fieldset>
        );
