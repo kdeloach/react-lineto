@@ -13,7 +13,15 @@ yarn run demo
 
 Browse to [localhost:4567](http://localhost:4567).
 
+## Demo
+
+![Demo](https://github.com/kdeloach/react-lineto/raw/master/preview.png)
+
 ## Components
+
+* [LineTo](#lineto)
+* [SteppedLineTo](#steppedlineto)
+* [Line](#line)
 
 ### LineTo
 
@@ -123,3 +131,13 @@ function render() {
 | zIndex      | number | Z-index offset                                 |
 
 \* Required
+
+## Release Checklist
+
+1. Bump version in `package.json`
+1. Run `yarn build`
+1. Update `CHANGELOG.md`
+1. Create version commit (ex. "2.0.0")
+1. Create matching tag (ex. "2.0.0")
+1. Push `master` branch and tags to origin
+1. Run `npm publish`
