@@ -655,7 +655,9 @@ var LineTo = function (_Component) {
         value: function detect() {
             var _props = this.props,
                 from = _props.from,
-                to = _props.to;
+                to = _props.to,
+                _props$within = _props.within,
+                within = _props$within === undefined ? '' : _props$within;
 
 
             var a = this.findElement(from);
@@ -673,6 +675,14 @@ var LineTo = function (_Component) {
 
             var offsetX = window.pageXOffset;
             var offsetY = window.pageYOffset;
+
+            if (within) {
+                var p = this.findElement(within);
+                var boxp = p.getBoundingClientRect();
+
+                offsetX -= boxp.left;
+                offsetY -= boxp.top;
+            }
 
             var x0 = box0.left + box0.width * anchor0.x + offsetX;
             var x1 = box1.left + box1.width * anchor1.x + offsetX;
@@ -698,6 +708,7 @@ exports.default = LineTo;
 LineTo.propTypes = Object.assign({}, {
     from: _propTypes2.default.string.isRequired,
     to: _propTypes2.default.string.isRequired,
+    within: _propTypes2.default.string,
     fromAnchor: _propTypes2.default.string,
     toAnchor: _propTypes2.default.string,
     delay: _propTypes2.default.number
@@ -715,14 +726,19 @@ var Line = exports.Line = function (_PureComponent) {
     _createClass(Line, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            // Append rendered DOM element to body so we don't have
-            // to factor in element offsets.
-            document.body.appendChild(this.el);
+            // Append rendered DOM element to the container the
+            // offsets were calculated for
+            this.within.appendChild(this.el);
         }
     }, {
         key: 'componentWillUnmount',
         value: function componentWillUnmount() {
-            document.body.removeChild(this.el);
+            this.within.removeChild(this.el);
+        }
+    }, {
+        key: 'findElement',
+        value: function findElement(className) {
+            return document.getElementsByClassName(className)[0];
         }
     }, {
         key: 'render',
@@ -733,8 +749,12 @@ var Line = exports.Line = function (_PureComponent) {
                 x0 = _props2.x0,
                 y0 = _props2.y0,
                 x1 = _props2.x1,
-                y1 = _props2.y1;
+                y1 = _props2.y1,
+                _props2$within = _props2.within,
+                within = _props2$within === undefined ? '' : _props2$within;
 
+
+            this.within = within ? this.findElement(within) : document.body;
 
             var dy = y1 - y0;
             var dx = x1 - x0;

@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Add `within` property to support mounting inside specific elements
+
 ## 2.0.0
 
 * Compatible with React 16
