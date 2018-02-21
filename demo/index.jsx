@@ -108,7 +108,7 @@ class HoverTest extends Component {
                 to={to}
                 fromAnchor="middle right"
                 toAnchor="middle left"
-                border="3px solid #f00"
+                borderWidth={3}
             />
         ) : null;
         return (
@@ -210,7 +210,9 @@ class DelayTest extends Component {
                     to="delay-F"
                     fromAnchor="75% 75%"
                     toAnchor="25% 25%"
-                    border="2px dotted #0f0"
+                    borderColor="#0f0"
+                    borderStyle="dotted"
+                    borderWidth={2}
                     delay={1} />
             </fieldset>
        );

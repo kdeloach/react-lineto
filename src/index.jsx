@@ -2,12 +2,16 @@ import PropTypes from 'prop-types';
 import React, { Component, PureComponent } from 'react';
 
 const defaultAnchor = { x: 0.5, y: 0.5 };
+const defaultBorderColor = '#f00';
+const defaultBorderStyle = 'solid';
+const defaultBorderWidth = 1;
 
 const optionalStyleProps = {
+    borderColor: PropTypes.string,
+    borderStyle: PropTypes.string,
+    borderWidth: PropTypes.number,
     className: PropTypes.string,
-    border: PropTypes.string,
     zIndex: PropTypes.number,
-    style: PropTypes.object,
 };
 
 export default class LineTo extends Component {
@@ -202,13 +206,14 @@ export class Line extends PureComponent {
         };
 
         const defaultStyle = {
-            height: '1px',
-            borderTop: this.props.border || '1px solid #f00',
+            borderTopColor: this.props.borderColor || defaultBorderColor,
+            borderTopStyle: this.props.borderStyle || defaultBorderStyle,
+            borderTopWidth: this.props.borderWidth || defaultBorderWidth,
         };
 
         const props = {
             className: this.props.className,
-            style: Object.assign({}, defaultStyle, this.props.style, positionStyle),
+            style: Object.assign({}, defaultStyle, positionStyle),
         }
 
         // We need a wrapper element to prevent an exception when then

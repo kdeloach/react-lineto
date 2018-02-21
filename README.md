@@ -37,18 +37,19 @@ function render() {
 
 #### Properties
 
-| Name       | Type   | Description                                    | Example Values
-| ---------- | ------ | ---------------------------------------------- | --------------
-| from\*     | string | CSS class name of the first element            |
-| to\*       | string | CSS class name of the second element           |
-| fromAnchor | string | Anchor for starting point (Format: "x y")      | `top right`, `bottom center`, `left`, `100% 0`
-| toAnchor   | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `left`, `100% 0`
-| delay      | number or bool | Force render after delay (ms)          | `0`, `1`, `100`, `true`
-| className  | string | Desired CSS className for the rendered element |
-| border     | string | Line decoration (CSS border property syntax)   | `1px solid #000`
-| zIndex     | number | Z-index offset                                 |
-| style      | object | Override default styles                        | `{ border: 'none', height: '2px', background-image: 'linear-gradient(261deg, #fd7700, #fd4400)' }`
-| within     | string | CSS class name of the desired container        |
+| Name        | Type   | Description                                    | Example Values
+| ----------- | ------ | ---------------------------------------------- | --------------
+| from\*      | string | CSS class name of the first element            |
+| to\*        | string | CSS class name of the second element           |
+| fromAnchor  | string | Anchor for starting point (Format: "x y")      | `top right`, `bottom center`, `left`, `100% 0`
+| toAnchor    | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `left`, `100% 0`
+| delay       | number or bool | Force render after delay (ms)          | `0`, `1`, `100`, `true`
+| className   | string | Desired CSS className for the rendered element |
+| borderColor | string | Border color                                   | `#f00`, `red`, etc.
+| borderStyle | string | Border style                                   | `solid`, `dashed`, etc.
+| borderWidth | number | Border width (px)                              |
+| zIndex      | number | Z-index offset                                 |
+| within      | string | CSS class name of the desired container        |
 
 \* Required
 
@@ -70,16 +71,17 @@ function render() {
 
 #### Properties
 
-| Name       | Type   | Description                                    | Example Values
-| ---------- | ------ | ---------------------------------------------- | --------------
-| x0\*       | number | First X coordinate                             |
-| y0\*       | number | First Y coordinate                             |
-| x1\*       | number | Second X coordinate                            |
-| y1\*       | number | Second Y coordinate                            |
-| className  | string | Desired CSS className for the rendered element |
-| border     | string | Line decoration (CSS border property syntax)   | `1px solid #000`
-| zIndex     | number | Z-index offset                                 |
-| style      | object | Override default styles                        | `{ border: 'none', height: '2px', background-image: 'linear-gradient(261deg, #fd7700, #fd4400)' }`
+| Name        | Type   | Description                                    | Example Values
+| ----------- | ------ | ---------------------------------------------- | --------------
+| x0\*        | number | First X coordinate                             |
+| y0\*        | number | First Y coordinate                             |
+| x1\*        | number | Second X coordinate                            |
+| y1\*        | number | Second Y coordinate                            |
+| className   | string | Desired CSS className for the rendered element |
+| borderColor | string | Border color                                   | `#f00`, `red`, etc.
+| borderStyle | string | Border style                                   | `solid`, `dashed`, etc.
+| borderWidth | number | Border width (px)                              |
+| zIndex      | number | Z-index offset                                 |
 | within     | string | CSS class name of the desired container        |
 
 \* Required
