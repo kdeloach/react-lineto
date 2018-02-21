@@ -1,3 +1,12 @@
+## 3.0.0
+
+* Add `SteppedLine` and `SteppedLineTo` components
+* Remove `style` and `border` properties
+* Add `borderWidth`, `borderStyle`, and `borderColor` properties
+* More flexible anchor parsing
+* Support boolean or number value for `delay` property
+* Add more demos
+
 ## 2.1.0
 
 * Add `within` property to support mounting inside specific elements

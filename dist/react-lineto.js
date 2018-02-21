@@ -507,7 +507,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_6__;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Line = undefined;
+exports.SteppedLine = exports.Line = exports.SteppedLineTo = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -532,12 +532,16 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var defaultAnchor = { x: 0.5, y: 0.5 };
+var defaultBorderColor = '#f00';
+var defaultBorderStyle = 'solid';
+var defaultBorderWidth = 1;
 
 var optionalStyleProps = {
+    borderColor: _propTypes2.default.string,
+    borderStyle: _propTypes2.default.string,
+    borderWidth: _propTypes2.default.number,
     className: _propTypes2.default.string,
-    border: _propTypes2.default.string,
-    zIndex: _propTypes2.default.number,
-    style: _propTypes2.default.object
+    zIndex: _propTypes2.default.number
 };
 
 var LineTo = function (_Component) {
@@ -554,12 +558,14 @@ var LineTo = function (_Component) {
         value: function componentWillMount() {
             this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
             this.toAnchor = this.parseAnchor(this.props.toAnchor);
+            this.delay = this.parseDelay(this.props.delay);
         }
     }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
-            if (typeof this.props.delay !== 'undefined') {
-                this.deferUpdate(this.props.delay);
+            this.delay = this.parseDelay(this.props.delay);
+            if (typeof this.delay !== 'undefined') {
+                this.deferUpdate(this.delay);
             }
         }
     }, {
@@ -571,8 +577,9 @@ var LineTo = function (_Component) {
             if (nextProps.toAnchor !== this.props.toAnchor) {
                 this.toAnchor = this.parseAnchor(this.props.toAnchor);
             }
-            if (typeof nextProps.delay !== 'undefined') {
-                this.deferUpdate(nextProps.delay);
+            this.delay = this.parseDelay(nextProps.delay);
+            if (typeof this.delay !== 'undefined') {
+                this.deferUpdate(this.delay);
             }
         }
     }, {
@@ -598,6 +605,20 @@ var LineTo = function (_Component) {
             this.t = setTimeout(function () {
                 return _this2.forceUpdate();
             }, delay);
+        }
+    }, {
+        key: 'parseDelay',
+        value: function parseDelay(value) {
+            if (typeof value === 'undefined') {
+                return value;
+            } else if (typeof value === 'boolean' && value) {
+                return 0;
+            }
+            var delay = parseInt(value, 10);
+            if (isNaN(delay) || !isFinite(delay)) {
+                throw new Error('LinkTo could not parse delay attribute "' + value + '"');
+            }
+            return delay;
         }
     }, {
         key: 'parseAnchorPercent',
@@ -635,7 +656,7 @@ var LineTo = function (_Component) {
                 return defaultAnchor;
             }
             var parts = value.split(' ');
-            if (parts.length !== 2) {
+            if (parts.length > 2) {
                 throw new Error('LinkTo anchor format is "<x> <y>"');
             }
 
@@ -643,7 +664,7 @@ var LineTo = function (_Component) {
                 x = _parts[0],
                 y = _parts[1];
 
-            return Object.assign({}, defaultAnchor, this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) }, this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) });
+            return Object.assign({}, defaultAnchor, x ? this.parseAnchorText(x) || { x: this.parseAnchorPercent(x) } : {}, y ? this.parseAnchorText(y) || { y: this.parseAnchorPercent(y) } : {});
         }
     }, {
         key: 'findElement',
@@ -711,8 +732,28 @@ LineTo.propTypes = Object.assign({}, {
     within: _propTypes2.default.string,
     fromAnchor: _propTypes2.default.string,
     toAnchor: _propTypes2.default.string,
-    delay: _propTypes2.default.number
+    delay: _propTypes2.default.oneOfType([_propTypes2.default.number, _propTypes2.default.bool])
 }, optionalStyleProps);
+
+var SteppedLineTo = exports.SteppedLineTo = function (_LineTo) {
+    _inherits(SteppedLineTo, _LineTo);
+
+    function SteppedLineTo() {
+        _classCallCheck(this, SteppedLineTo);
+
+        return _possibleConstructorReturn(this, (SteppedLineTo.__proto__ || Object.getPrototypeOf(SteppedLineTo)).apply(this, arguments));
+    }
+
+    _createClass(SteppedLineTo, [{
+        key: 'render',
+        value: function render() {
+            var points = this.detect();
+            return points ? _react2.default.createElement(SteppedLine, _extends({}, points, this.props)) : null;
+        }
+    }]);
+
+    return SteppedLineTo;
+}(LineTo);
 
 var Line = exports.Line = function (_PureComponent) {
     _inherits(Line, _PureComponent);
@@ -743,7 +784,7 @@ var Line = exports.Line = function (_PureComponent) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
+            var _this5 = this;
 
             var _props2 = this.props,
                 x0 = _props2.x0,
@@ -774,13 +815,14 @@ var Line = exports.Line = function (_PureComponent) {
             };
 
             var defaultStyle = {
-                height: '1px',
-                borderTop: this.props.border || '1px solid #f00'
+                borderTopColor: this.props.borderColor || defaultBorderColor,
+                borderTopStyle: this.props.borderStyle || defaultBorderStyle,
+                borderTopWidth: this.props.borderWidth || defaultBorderWidth
             };
 
             var props = {
                 className: this.props.className,
-                style: Object.assign({}, defaultStyle, this.props.style, positionStyle)
+                style: Object.assign({}, defaultStyle, positionStyle)
 
                 // We need a wrapper element to prevent an exception when then
                 // React component is removed. This is because we manually
@@ -790,7 +832,7 @@ var Line = exports.Line = function (_PureComponent) {
                 { className: 'react-lineto-placeholder' },
                 _react2.default.createElement('div', _extends({
                     ref: function ref(el) {
-                        _this4.el = el;
+                        _this5.el = el;
                     }
                 }, props))
             );
@@ -805,6 +847,96 @@ Line.propTypes = Object.assign({}, {
     y0: _propTypes2.default.number.isRequired,
     x1: _propTypes2.default.number.isRequired,
     y1: _propTypes2.default.number.isRequired
+}, optionalStyleProps);
+
+var SteppedLine = exports.SteppedLine = function (_PureComponent2) {
+    _inherits(SteppedLine, _PureComponent2);
+
+    function SteppedLine() {
+        _classCallCheck(this, SteppedLine);
+
+        return _possibleConstructorReturn(this, (SteppedLine.__proto__ || Object.getPrototypeOf(SteppedLine)).apply(this, arguments));
+    }
+
+    _createClass(SteppedLine, [{
+        key: 'render',
+        value: function render() {
+            if (this.props.orientation === 'h') {
+                return this.renderHorizontal();
+            }
+            return this.renderVertical();
+        }
+    }, {
+        key: 'renderVertical',
+        value: function renderVertical() {
+            var _props3 = this.props,
+                x0 = _props3.x0,
+                y0 = _props3.y0,
+                x1 = _props3.x1,
+                y1 = _props3.y1;
+
+
+            var dx = x1 - x0;
+            if (dx === 0) {
+                return _react2.default.createElement(Line, this.props);
+            }
+
+            var borderWidth = this.props.borderWidth || defaultBorderWidth;
+            var y2 = (y0 + y1) / 2;
+
+            var xOffset = dx > 0 ? borderWidth : 0;
+            var minX = Math.min(x0, x1) - xOffset;
+            var maxX = Math.max(x0, x1);
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'react-steppedlineto' },
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: x0, y0: y0, x1: x0, y1: y2 })),
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: x1, y0: y1, x1: x1, y1: y2 })),
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: minX, y0: y2, x1: maxX, y1: y2 }))
+            );
+        }
+    }, {
+        key: 'renderHorizontal',
+        value: function renderHorizontal() {
+            var _props4 = this.props,
+                x0 = _props4.x0,
+                y0 = _props4.y0,
+                x1 = _props4.x1,
+                y1 = _props4.y1;
+
+
+            var dy = y1 - y0;
+            if (dy === 0) {
+                return _react2.default.createElement(Line, this.props);
+            }
+
+            var borderWidth = this.props.borderWidth || defaultBorderWidth;
+            var x2 = (x0 + x1) / 2;
+
+            var yOffset = dy < 0 ? borderWidth : 0;
+            var minY = Math.min(y0, y1) - yOffset;
+            var maxY = Math.max(y0, y1);
+
+            return _react2.default.createElement(
+                'div',
+                { className: 'react-steppedlineto' },
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: x0, y0: y0, x1: x2, y1: y0 })),
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: x1, y0: y1, x1: x2, y1: y1 })),
+                _react2.default.createElement(Line, _extends({}, this.props, { x0: x2, y0: minY, x1: x2, y1: maxY }))
+            );
+        }
+    }]);
+
+    return SteppedLine;
+}(_react.PureComponent);
+
+SteppedLine.propTypes = Object.assign({}, {
+    x0: _propTypes2.default.number.isRequired,
+    y0: _propTypes2.default.number.isRequired,
+    x1: _propTypes2.default.number.isRequired,
+    y1: _propTypes2.default.number.isRequired,
+    orientation: _propTypes2.default.oneOf(['h', 'v'])
 }, optionalStyleProps);
 
 /***/ }),
