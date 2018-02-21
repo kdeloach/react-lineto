@@ -14,11 +14,13 @@ export default class LineTo extends Component {
     componentWillMount() {
         this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
         this.toAnchor = this.parseAnchor(this.props.toAnchor);
+        this.delay = this.parseDelay(this.props.delay);
     }
 
     componentDidMount() {
-        if (typeof this.props.delay !== 'undefined') {
-            this.deferUpdate(this.props.delay);
+        this.delay = this.parseDelay(this.props.delay);
+        if (typeof this.delay !== 'undefined') {
+            this.deferUpdate(this.delay);
         }
     }
 
@@ -29,8 +31,9 @@ export default class LineTo extends Component {
         if (nextProps.toAnchor !== this.props.toAnchor) {
             this.toAnchor = this.parseAnchor(this.props.toAnchor);
         }
-        if (typeof nextProps.delay !== 'undefined') {
-            this.deferUpdate(nextProps.delay);
+        this.delay = this.parseDelay(nextProps.delay);
+        if (typeof this.delay !== 'undefined') {
+            this.deferUpdate(this.delay);
         }
     }
 
@@ -48,6 +51,19 @@ export default class LineTo extends Component {
     deferUpdate(delay) {
         clearTimeout(this.t);
         this.t = setTimeout(() => this.forceUpdate(), delay);
+    }
+
+    parseDelay(value) {
+        if (typeof value === 'undefined') {
+            return value;
+        } else if (typeof value === 'boolean' && value) {
+            return 0;
+        }
+        const delay = parseInt(value, 10);
+        if (isNaN(delay) || !isFinite(delay)) {
+            throw new Error(`LinkTo could not parse delay attribute "${value}"`);
+        }
+        return delay;
     }
 
     parseAnchorPercent(value) {
@@ -145,7 +161,7 @@ LineTo.propTypes = Object.assign({}, {
     within: PropTypes.string,
     fromAnchor: PropTypes.string,
     toAnchor: PropTypes.string,
-    delay: PropTypes.number,
+    delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
 }, optionalStyleProps);
 
 export class Line extends PureComponent {
