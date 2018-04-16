@@ -27,6 +27,7 @@ var config = {
     },
 
     externals: [
+        'prop-types',
         'react'
     ]
 };
@@ -39,7 +40,12 @@ module.exports = [
             library: 'react-lineto',
             libraryTarget: 'umd',
             umdNamedDefine: true,
-        }
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            })
+        ]
     }),
     Object.assign({}, config, {
         output: {
@@ -50,7 +56,10 @@ module.exports = [
             umdNamedDefine: true,
         },
         plugins: [
-            new webpack.optimize.UglifyJsPlugin()
+            new webpack.optimize.UglifyJsPlugin(),
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify('production')
+            })
         ]
     })
 ];
