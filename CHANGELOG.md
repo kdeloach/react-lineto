@@ -1,3 +1,7 @@
+## 3.1.0
+* Set `NODE_ENV` to production for published bundle
+* Exclude `prop-types` from published bundle
+
 ## 3.0.0
 
 * Add `SteppedLine` and `SteppedLineTo` components
