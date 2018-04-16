@@ -27,6 +27,7 @@ var config = {
     },
 
     externals: [
+        'prop-types',
         'react'
     ]
 };
