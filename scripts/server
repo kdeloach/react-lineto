@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DOCKER_IMAGE=kdeloach/react-lineto:latest
+
+docker run --rm --entrypoint yarn \
+    -p "4567:4567" \
+    ${DOCKER_IMAGE} \
+    run demo

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DOCKER_IMAGE=kdeloach/react-lineto:latest
+
+docker build -t ${DOCKER_IMAGE} .
+
+docker run --rm \
+    -v ${PWD}:/usr/src \
+    --entrypoint yarn \
+    ${DOCKER_IMAGE} \
+    install
+
+docker run --rm \
+    -v ${PWD}:/usr/src \
+    --entrypoint yarn \
+    ${DOCKER_IMAGE} \
+    build
