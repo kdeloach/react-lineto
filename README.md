@@ -135,9 +135,9 @@ function render() {
 ## Release Checklist
 
 1. Bump version in `package.json`
-1. Run `yarn build`
 1. Update `CHANGELOG.md`
+1. Run `yarn build` or `./scripts/update`
 1. Create version commit (ex. "2.0.0")
 1. Create matching tag (ex. "2.0.0")
 1. Push `master` branch and tags to origin
-1. Run `npm publish`
+1. Verify Travis CI published NPM package
