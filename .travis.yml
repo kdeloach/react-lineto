@@ -1,6 +1,15 @@
 language: node_js
+
 node_js:
 - node
+
+install:
+- yarn install
+
+script:
+- yarn build
+- yarn test
+
 deploy:
   provider: npm
   email: kdeloach@gmail.com
