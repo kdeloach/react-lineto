@@ -41,6 +41,13 @@ export default class LineTo extends Component {
         }
     }
 
+    componentWillUnmount() {
+        if (this.t) {
+            clearTimeout(this.t);
+            this.t = null;
+        }
+    }
+
     shouldComponentUpdate() {
         // Always update component if the parent component has been updated.
         // The reason for this is that we would not only like to update
@@ -53,7 +60,9 @@ export default class LineTo extends Component {
 
     // Forced update after delay (MS)
     deferUpdate(delay) {
-        clearTimeout(this.t);
+        if (this.t) {
+            clearTimeout(this.t);
+        }
         this.t = setTimeout(() => this.forceUpdate(), delay);
     }
 
