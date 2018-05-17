@@ -174,6 +174,14 @@ var LineTo = function (_Component) {
             }
         }
     }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            if (this.t) {
+                clearTimeout(this.t);
+                this.t = null;
+            }
+        }
+    }, {
         key: 'shouldComponentUpdate',
         value: function shouldComponentUpdate() {
             // Always update component if the parent component has been updated.
@@ -192,7 +200,9 @@ var LineTo = function (_Component) {
         value: function deferUpdate(delay) {
             var _this2 = this;
 
-            clearTimeout(this.t);
+            if (this.t) {
+                clearTimeout(this.t);
+            }
             this.t = setTimeout(function () {
                 return _this2.forceUpdate();
             }, delay);

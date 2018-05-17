@@ -1,3 +1,6 @@
+## 3.1.2
+* Clear timeout set by deferUpdate when unmounting component
+
 ## 3.1.1
 * Fix bug where `zIndex` defaults to 1 when prop value is 0
 
