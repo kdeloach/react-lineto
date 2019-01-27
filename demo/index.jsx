@@ -12,6 +12,7 @@ function Demo() {
             <SteppedTest />
             <HoverTest />
             <DelayTest />
+            <TreeTest />
         </div>
     );
 }
@@ -284,6 +285,73 @@ class DelayTest extends Component {
        );
     }
 }
+
+class TreeTest extends Component {
+    render() {
+      return (
+        <fieldset id="tree-test">
+            <legend>Tree Test</legend>
+            <div className="tree-test-wrap">
+                <TreeItem name="tree" depth={0} index={0} />
+            </div>
+        </fieldset>
+      );
+    }
+  }
+
+  class TreeItem extends Component {
+    render() {
+        const style = {
+            delay: true,
+            borderColor: '#ddd',
+            borderStyle: 'solid',
+            borderWidth: 3
+        };
+        const r = Math.ceil(((this.props.depth + 1) / 30) * 255);
+        const g = Math.ceil(((this.props.depth + 2) / 10) * 255);
+        const b = Math.ceil(((this.props.depth + 4) / 6) * 255);
+        return (
+            <div className="tree-item">
+                <div className="tree-block-wrap">
+                    <Block className={`tree-${this.props.name}`} color={`rgb(${r}, ${g}, ${b})`}>
+                        {`${String.fromCharCode(65 + this.props.depth)}${this.props.index}`}
+                    </Block>
+                </div>
+                {this.props.depth < 5 ? (
+                    <div className="tree-column">
+                        {Array(Math.ceil(Math.random() * 3) + 1).fill(null).
+                            map((_, i) => (
+                                <TreeItem
+                                    parent={this}
+                                    index={this.props.index * this.props.depth + i}
+                                    name={`${this.props.name}-child-${i}`}
+                                    depth={this.props.depth + 1}
+                                />
+                            ))
+                        }
+                    </div>
+                ) : null}
+                {this.props.parent ? (
+                    <SteppedLineTo
+                        within="tree-test-wrap"
+                        from={`tree-${this.props.parent.props.name}`}
+                        to={`tree-${this.props.name}`}
+                        fromAnchor="right"
+                        toAnchor="left"
+                        orientation="h"
+                        {...style} />
+                ) : null}
+            </div>
+      );
+    }
+  }
+
+  TreeItem.propTypes = {
+    depth: PropTypes.number,
+    index: PropTypes.number,
+    parent: PropTypes.instanceOf(TreeItem),
+    name: PropTypes.string
+  };
 
 function createRootElement() {
     const root = document.createElement('div');
