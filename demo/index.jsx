@@ -292,7 +292,7 @@ class TreeTest extends Component {
         <fieldset id="tree-test">
             <legend>Tree Test</legend>
             <div className="tree-test-wrap">
-                <TreeItem name="tree" depth={0} index={0} />
+                <TreeItem name="" depth={0} index={0} />
             </div>
         </fieldset>
       );
@@ -307,24 +307,23 @@ class TreeTest extends Component {
             borderStyle: 'solid',
             borderWidth: 3
         };
-        const r = Math.ceil(((this.props.depth + 1) / 30) * 255);
-        const g = Math.ceil(((this.props.depth + 2) / 10) * 255);
-        const b = Math.ceil(((this.props.depth + 4) / 6) * 255);
+        const h = ({ _: 20, A: 120, B: 100, C: 200, D: 50 })[this.props.name[0] || '_'];
+        const l = Math.ceil(((this.props.index + 2) / 20) * 100) + 10 * (this.props.depth + 1);
         return (
             <div className="tree-item">
                 <div className="tree-block-wrap">
-                    <Block className={`tree-${this.props.name}`} color={`rgb(${r}, ${g}, ${b})`}>
-                        {`${String.fromCharCode(65 + this.props.depth)}${this.props.index}`}
+                    <Block className={`tree-${this.props.name}`} color={`hsl(${h}, 100%, ${l}%)`}>
+                        {this.props.name || 'X'}
                     </Block>
                 </div>
-                {this.props.depth < 5 ? (
+                {this.props.depth < 2 ? (
                     <div className="tree-column">
                         {Array(Math.ceil(Math.random() * 3) + 1).fill(null).
                             map((_, i) => (
                                 <TreeItem
                                     parent={this}
                                     index={this.props.index * this.props.depth + i}
-                                    name={`${this.props.name}-child-${i}`}
+                                    name={`${this.props.name}${String.fromCharCode(65 + i)}`}
                                     depth={this.props.depth + 1}
                                 />
                             ))
