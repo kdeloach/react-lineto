@@ -302,8 +302,8 @@ var LineTo = function (_Component) {
                 var p = this.findElement(within);
                 var boxp = p.getBoundingClientRect();
 
-                offsetX -= boxp.left;
-                offsetY -= boxp.top;
+                offsetX -= boxp.left + (window.pageXOffset || document.documentElement.scrollLeft);
+                offsetY -= boxp.top + (window.pageYOffset || document.documentElement.scrollTop);
             }
 
             var x0 = box0.left + box0.width * anchor0.x + offsetX;

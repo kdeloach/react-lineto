@@ -1,3 +1,6 @@
+## 3.1.3
+* Include scroll position in line offset calculation
+
 ## 3.1.2
 * Clear timeout set by deferUpdate when unmounting component
 

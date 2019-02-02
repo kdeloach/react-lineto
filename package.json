@@ -1,6 +1,6 @@
 {
   "name": "react-lineto",
-  "version": "3.1.2",
+  "version": "3.1.3",
   "author": "Kevin DeLoach <kdeloach@gmail.com>",
   "license": "MIT",
   "main": "dist/react-lineto.js",
