@@ -56,6 +56,7 @@ function render() {
 | from\*      | string | CSS class name of the first element            |
 | toAnchor    | string | Anchor for ending point (Format: "x y")        | `top right`, `bottom center`, `left`, `100% 0`
 | to\*        | string | CSS class name of the second element           |
+| within      | string | CSS class name of the desired container        |
 | zIndex      | number | Z-index offset                                 |
 
 \* Required
