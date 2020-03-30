@@ -1,3 +1,7 @@
+## 3.1.4
+* Account for scrolling in within
+* Bump stringstream from 0.0.5 to 0.0.6
+
 ## 3.1.3
 * Include scroll position in line offset calculation
 
