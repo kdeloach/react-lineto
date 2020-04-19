@@ -145,7 +145,7 @@ declare module 'react-lineto' {
     /**
      * Draw line between two DOM elements.
      */
-    export default class LineTo<P extends LineToProps> extends Component<P> {
+    export default class LineTo<P extends LineToProps = LineToProps> extends Component<Extract<P, LineToProps>> {
         /**
          * Forced update after delay (MS)
          */
