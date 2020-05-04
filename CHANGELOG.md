@@ -1,3 +1,6 @@
+## 3.2.0
+* Add TypeScript type definitions
+
 ## 3.1.3
 * Include scroll position in line offset calculation
 
