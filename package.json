@@ -4,6 +4,7 @@
   "author": "Kevin DeLoach <kdeloach@gmail.com>",
   "license": "MIT",
   "main": "dist/react-lineto.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "demo": "webpack-dev-server --config webpack.demo.config.js --hot --inline",
