@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "prop-types": "15.6.0",
-    "react": "16.2.0"
+    "react": "16.13.1"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
