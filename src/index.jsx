@@ -15,6 +15,7 @@ const optionalStyleProps = {
 };
 
 export default class LineTo extends Component {
+    // eslint-disable-next-line camelcase
     UNSAFE_componentWillMount() {
         this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
         this.toAnchor = this.parseAnchor(this.props.toAnchor);
@@ -28,6 +29,7 @@ export default class LineTo extends Component {
         }
     }
 
+    // eslint-disable-next-line camelcase
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.fromAnchor !== this.props.fromAnchor) {
             this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
