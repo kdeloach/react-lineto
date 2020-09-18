@@ -15,7 +15,7 @@ const optionalStyleProps = {
 };
 
 export default class LineTo extends Component {
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
         this.toAnchor = this.parseAnchor(this.props.toAnchor);
         this.delay = this.parseDelay(this.props.delay);
@@ -28,7 +28,7 @@ export default class LineTo extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.fromAnchor !== this.props.fromAnchor) {
             this.fromAnchor = this.parseAnchor(this.props.fromAnchor);
         }

@@ -25,7 +25,14 @@
         "block-spacing": "error",
         "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
         "callback-return": "error",
-        "camelcase": "error",
+        "camelcase": [
+            "error",
+            {
+                "allow": [
+                    "^UNSAFE_"
+                ]
+            }
+        ],
         "capitalized-comments": "off",
         "class-methods-use-this": "off",
         "comma-dangle": "off",
