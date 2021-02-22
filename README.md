@@ -42,6 +42,8 @@ function render() {
     );
 }
 ```
+If using multiple instances of `<LineTo />` inside separate components, you must provide a unique key for each of the container divs.
+
 
 #### Properties
 
