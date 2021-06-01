@@ -1,27 +1,21 @@
-'use strict';
+/* eslint-env node */
+const path = require('path')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
-var webpack = require('webpack');
-var path = require('path');
+const outputPath = path.join(__dirname, 'dist')
 
-var outputPath = path.join(__dirname, 'dist');
-
-var config = {
+const config = {
     entry: './src/index.jsx',
 
+    mode: 'production',
+    plugins: [new ESLintPlugin({ extensions: '.jsx' })],
+
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loader: 'babel-loader',
+                use: ['babel-loader'],
                 exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'react']
-                }
-            },
-            {
-                test: /\.jsx?/,
-                exclude: /node_modules/,
-                loader: 'eslint-loader',
             },
         ]
     },
@@ -41,11 +35,9 @@ module.exports = [
             libraryTarget: 'umd',
             umdNamedDefine: true,
         },
-        plugins: [
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            })
-        ]
+        optimization: {
+            minimize: false,
+        }
     }),
     Object.assign({}, config, {
         output: {
@@ -54,12 +46,6 @@ module.exports = [
             library: 'react-lineto',
             libraryTarget: 'umd',
             umdNamedDefine: true,
-        },
-        plugins: [
-            new webpack.optimize.UglifyJsPlugin(),
-            new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify('production')
-            })
-        ]
+        }
     })
 ];

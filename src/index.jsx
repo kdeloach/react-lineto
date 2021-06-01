@@ -170,14 +170,15 @@ export default class LineTo extends Component {
     }
 }
 
-LineTo.propTypes = Object.assign({}, {
+LineTo.propTypes = {
     from: PropTypes.string.isRequired,
     to: PropTypes.string.isRequired,
     within: PropTypes.string,
     fromAnchor: PropTypes.string,
     toAnchor: PropTypes.string,
     delay: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]),
-}, optionalStyleProps);
+    ...optionalStyleProps,
+};
 
 export class SteppedLineTo extends LineTo {
     render() {
@@ -252,12 +253,13 @@ export class Line extends PureComponent {
     }
 }
 
-Line.propTypes = Object.assign({}, {
+Line.propTypes = {
     x0: PropTypes.number.isRequired,
     y0: PropTypes.number.isRequired,
     x1: PropTypes.number.isRequired,
     y1: PropTypes.number.isRequired,
-}, optionalStyleProps);
+    ...optionalStyleProps,
+};
 
 export class SteppedLine extends PureComponent {
     render() {
@@ -316,10 +318,11 @@ export class SteppedLine extends PureComponent {
     }
 }
 
-SteppedLine.propTypes = Object.assign({}, {
+SteppedLine.propTypes = {
     x0: PropTypes.number.isRequired,
     y0: PropTypes.number.isRequired,
     x1: PropTypes.number.isRequired,
     y1: PropTypes.number.isRequired,
     orientation: PropTypes.oneOf(['h', 'v']),
-}, optionalStyleProps);
+    ...optionalStyleProps,
+};
