@@ -1,3 +1,6 @@
+## 3.2.1
+* Fix vulnerabilities, update to react-17, babel-7, eslint-7, webpack-5, node lts
+
 ## 3.2.0
 * Add TypeScript type definitions
 
