@@ -1,26 +1,20 @@
-'use strict';
-
-var webpack = require('webpack');
-var path = require('path');
+/* eslint-env node */
+const path = require('path')
+const ESLintPlugin = require('eslint-webpack-plugin')
 
 module.exports = {
     entry: './demo/index.jsx',
 
+    mode: 'development',
+    plugins: [new ESLintPlugin({ extensions: '.jsx' })],
+
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/,
-                query: {
-                    presets: ['es2015', 'react', 'react-hmre'],
-                }
-            },
-            {
-                test: /\.jsx?/,
-                exclude: /node_modules|dist/,
-                loader: 'eslint-loader',
-            },
+                use: ['babel-loader'],
+                exclude: /node_modules/
+            }
         ]
     },
 

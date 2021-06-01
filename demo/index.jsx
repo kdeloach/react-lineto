@@ -1,4 +1,6 @@
-import 'babel-polyfill';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { render } from 'react-dom';
@@ -325,6 +327,7 @@ class TreeTest extends Component {
                                     index={this.props.index * this.props.depth + i}
                                     name={`${this.props.name}${String.fromCharCode(65 + i)}`}
                                     depth={this.props.depth + 1}
+                                    key={i}
                                 />
                             ))
                         }
