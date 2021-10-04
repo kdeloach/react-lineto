@@ -101,7 +101,7 @@ class SteppedTest extends Component {
 
                 <Block
                     className="stepped-A"
-                    top="50px"
+                    top="50.2px"
                     left="90px"
                     color="#00f"
                     >A</Block>
@@ -114,7 +114,7 @@ class SteppedTest extends Component {
                 <Block
                     className="stepped-C"
                     top="150px"
-                    left="90px"
+                    left="90.7px"
                     color="#00f"
                     >C</Block>
                 <Block
