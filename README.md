@@ -2,7 +2,7 @@
 
 Draw a line between two elements in React.
 
-[![Build Status](https://travis-ci.org/kdeloach/react-lineto.svg?branch=master)](https://travis-ci.org/kdeloach/react-lineto)
+[![Build Status](https://app.travis-ci.com/kdeloach/react-lineto.svg?branch=master)](https://app.travis-ci.com/kdeloach/react-lineto)
 
 ## Getting Started
 
