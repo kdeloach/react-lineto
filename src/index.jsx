@@ -270,15 +270,21 @@ export class SteppedLine extends PureComponent {
     }
 
     renderVertical() {
-        const { x0, y0, x1, y1 } = this.props;
+        const x0 = Math.round(this.props.x0);
+        const y0 = Math.round(this.props.y0);
+        const x1 = Math.round(this.props.x1);
+        const y1 = Math.round(this.props.y1);
 
         const dx = x1 - x0;
+        if (Math.abs(dx) <= 1) {
+            return <Line {...this.props} {...{ x0, y0, x1: x0, y1 }} />;
+        }
         if (dx === 0) {
             return <Line {...this.props} />
         }
 
         const borderWidth = this.props.borderWidth || defaultBorderWidth;
-        const y2 = (y0 + y1) / 2;
+        const y2 = Math.round((y0 + y1) / 2);
 
         const xOffset = dx > 0 ? borderWidth : 0;
         const minX = Math.min(x0, x1) - xOffset;
@@ -294,15 +300,22 @@ export class SteppedLine extends PureComponent {
     }
 
     renderHorizontal() {
-        const { x0, y0, x1, y1 } = this.props;
+        const x0 = Math.round(this.props.x0);
+        const y0 = Math.round(this.props.y0);
+        const x1 = Math.round(this.props.x1);
+        const y1 = Math.round(this.props.y1);
 
         const dy = y1 - y0;
+        if (Math.abs(dy) <= 1) {
+            return <Line {...this.props} {...{ x0, y0, x1, y1: y0 }} />;
+        }
+
         if (dy === 0) {
-            return <Line {...this.props} />
+            return <Line {...this.props} />;
         }
 
         const borderWidth = this.props.borderWidth || defaultBorderWidth;
-        const x2 = (x0 + x1) / 2;
+        const x2 = Math.round((x0 + x1) / 2);
 
         const yOffset = dy < 0 ? borderWidth : 0;
         const minY = Math.min(y0, y1) - yOffset;
