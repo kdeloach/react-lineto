@@ -529,19 +529,27 @@ var SteppedLine = /*#__PURE__*/function (_PureComponent2) {
   }, {
     key: "renderVertical",
     value: function renderVertical() {
-      var _this$props3 = this.props,
-          x0 = _this$props3.x0,
-          y0 = _this$props3.y0,
-          x1 = _this$props3.x1,
-          y1 = _this$props3.y1;
+      var x0 = Math.round(this.props.x0);
+      var y0 = Math.round(this.props.y0);
+      var x1 = Math.round(this.props.x1);
+      var y1 = Math.round(this.props.y1);
       var dx = x1 - x0;
+
+      if (Math.abs(dx) <= 1) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Line, _extends({}, this.props, {
+          x0: x0,
+          y0: y0,
+          x1: x0,
+          y1: y1
+        }));
+      }
 
       if (dx === 0) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Line, this.props);
       }
 
       var borderWidth = this.props.borderWidth || defaultBorderWidth;
-      var y2 = (y0 + y1) / 2;
+      var y2 = Math.round((y0 + y1) / 2);
       var xOffset = dx > 0 ? borderWidth : 0;
       var minX = Math.min(x0, x1) - xOffset;
       var maxX = Math.max(x0, x1);
@@ -567,19 +575,27 @@ var SteppedLine = /*#__PURE__*/function (_PureComponent2) {
   }, {
     key: "renderHorizontal",
     value: function renderHorizontal() {
-      var _this$props4 = this.props,
-          x0 = _this$props4.x0,
-          y0 = _this$props4.y0,
-          x1 = _this$props4.x1,
-          y1 = _this$props4.y1;
+      var x0 = Math.round(this.props.x0);
+      var y0 = Math.round(this.props.y0);
+      var x1 = Math.round(this.props.x1);
+      var y1 = Math.round(this.props.y1);
       var dy = y1 - y0;
+
+      if (Math.abs(dy) <= 1) {
+        return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Line, _extends({}, this.props, {
+          x0: x0,
+          y0: y0,
+          x1: x1,
+          y1: y0
+        }));
+      }
 
       if (dy === 0) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(Line, this.props);
       }
 
       var borderWidth = this.props.borderWidth || defaultBorderWidth;
-      var x2 = (x0 + x1) / 2;
+      var x2 = Math.round((x0 + x1) / 2);
       var yOffset = dy < 0 ? borderWidth : 0;
       var minY = Math.min(y0, y1) - yOffset;
       var maxY = Math.max(y0, y1);
