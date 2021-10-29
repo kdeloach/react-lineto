@@ -279,9 +279,6 @@ export class SteppedLine extends PureComponent {
         if (Math.abs(dx) <= 1) {
             return <Line {...this.props} {...{ x0, y0, x1: x0, y1 }} />;
         }
-        if (dx === 0) {
-            return <Line {...this.props} />
-        }
 
         const borderWidth = this.props.borderWidth || defaultBorderWidth;
         const y2 = Math.round((y0 + y1) / 2);
@@ -308,10 +305,6 @@ export class SteppedLine extends PureComponent {
         const dy = y1 - y0;
         if (Math.abs(dy) <= 1) {
             return <Line {...this.props} {...{ x0, y0, x1, y1: y0 }} />;
-        }
-
-        if (dy === 0) {
-            return <Line {...this.props} />;
         }
 
         const borderWidth = this.props.borderWidth || defaultBorderWidth;
