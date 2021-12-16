@@ -127,32 +127,41 @@ export default class LineTo extends Component {
         return document.getElementsByClassName(className)[0];
     }
 
+    findElementWithin(className, within) {
+        return within.querySelector(`.${CSS.escape(className)}`);
+    }
+    
     detect() {
-        const { from, to, within = '' } = this.props;
+        const { from, to, within = "" } = this.props;
+        let parent = document;
+        let offsetX = window.pageXOffset;
+        let offsetY = window.pageYOffset;
+        if (within) {
+            parent = this.findElement(within);
+            if (!parent) return false;
+            const parentBox = parent.getBoundingClientRect();
+            offsetX -=
+            parentBox.left +
+            (window.pageXOffset || document.documentElement.scrollLeft) -
+            parent.scrollLeft;
+            offsetY -=
+            parentBox.top +
+            (window.pageYOffset || document.documentElement.scrollTop) -
+            parent.scrollTop;
+        }
 
-        const a = this.findElement(from);
-        const b = this.findElement(to);
+        const a = this.findElementWithin(from, parent);
+        const b = this.findElementWithin(to, parent);
 
         if (!a || !b) {
             return false;
         }
 
-        const anchor0 = this.fromAnchor;
-        const anchor1 = this.toAnchor;
-
         const box0 = a.getBoundingClientRect();
         const box1 = b.getBoundingClientRect();
 
-        let offsetX = window.pageXOffset;
-        let offsetY = window.pageYOffset;
-
-        if (within) {
-            const p = this.findElement(within);
-            const boxp = p.getBoundingClientRect();
-
-            offsetX -= boxp.left + (window.pageXOffset || document.documentElement.scrollLeft) - p.scrollLeft;
-            offsetY -= boxp.top + (window.pageYOffset || document.documentElement.scrollTop) - p.scrollTop;
-        }
+        const anchor0 = this.fromAnchor;
+        const anchor1 = this.toAnchor;
 
         const x0 = box0.left + box0.width * anchor0.x + offsetX;
         const x1 = box1.left + box1.width * anchor1.x + offsetX;
