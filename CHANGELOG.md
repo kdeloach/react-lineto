@@ -1,3 +1,8 @@
+## 3.4.0
+* Update to react 18.2.0
+* Update webpack
+* Fix demo
+
 ## 3.3.0
 * Fix subpixel render issues of SteppedLine component
 

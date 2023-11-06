@@ -1,13 +1,13 @@
 {
     "name": "react-lineto",
-    "version": "3.3.0",
+    "version": "3.4.0",
     "author": "Kevin DeLoach <kdeloach@gmail.com>",
     "license": "MIT",
     "main": "dist/react-lineto.js",
     "types": "src/index.d.ts",
     "scripts": {
         "build": "webpack --config webpack.config.js",
-        "demo": "webpack serve --config webpack.demo.config.js --hot --inline",
+        "demo": "webpack serve --config webpack.demo.config.js --open",
         "lint": "eslint --ext js,jsx ./src",
         "test": "npm run lint"
     },
@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "prop-types": "15.7.2",
-        "react": "17.0.2"
+        "react": "18.2.0"
     },
     "devDependencies": {
         "@babel/core": "^7.14.3",
@@ -33,13 +33,16 @@
         "eslint": "^7.27.0",
         "eslint-plugin-react": "^7.24.0",
         "eslint-webpack-plugin": "^2.5.4",
-        "react-dom": "17.0.2",
+        "react-dom": "18.2.0",
         "regenerator-runtime": "^0.13.7",
         "webpack": "^5.38.1",
         "webpack-cli": "^4.7.0",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^4.15.1"
     },
     "babel": {
-        "presets": ["@babel/preset-env", "@babel/preset-react"]
+        "presets": [
+            "@babel/preset-env",
+            "@babel/preset-react"
+        ]
     }
 }
